@@ -1,0 +1,5 @@
+../Core/Tasks/Src/wheel_control_task.c:54:6:balancing_task	1
+../Core/Tasks/Src/wheel_control_task.c:86:6:Ctrl_TargetUpdateTask	5
+../Core/Tasks/Src/wheel_control_task.c:126:6:LegPos_UpdateTask	1
+../Core/Tasks/Src/wheel_control_task.c:167:6:Ctrl_Task	22
+../Core/Tasks/Src/wheel_control_task.c:382:6:Ctrl_Init	1

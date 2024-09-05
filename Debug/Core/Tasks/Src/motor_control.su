@@ -1,0 +1,11 @@
+../Core/Tasks/Src/motor_control.c:15:6:yaw_pid	64	static
+../Core/Tasks/Src/motor_control.c:49:6:yangle_pid	88	static
+../Core/Tasks/Src/motor_control.c:84:6:yangle_o_pid	88	static
+../Core/Tasks/Src/motor_control.c:128:6:angle_pid	72	static
+../Core/Tasks/Src/motor_control.c:148:6:oangle_pid	72	static
+../Core/Tasks/Src/motor_control.c:181:6:speed_pid	64	static
+../Core/Tasks/Src/motor_control.c:219:6:motor_send_RTOS	32	static
+../Core/Tasks/Src/motor_control.c:228:6:motor_send_can	64	static
+../Core/Tasks/Src/motor_control.c:350:6:kill_can	40	static
+../Core/Tasks/Src/motor_control.c:382:6:float_minmax	24	static
+../Core/Tasks/Src/motor_control.c:401:6:reset_pid	16	static

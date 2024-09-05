@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "bsp_imu.h": "c",
+        "robot_config.h": "c",
+        "stdlib.h": "c",
+        "stddef.h": "c",
+        "imu_processing_task.h": "c",
+        "motor_control.h": "c"
+    }
+}
