@@ -4,4 +4,4 @@
 ../Core/Src/freertos.c:153:6:vApplicationGetIdleTaskMemory	24	static
 ../Core/Src/freertos.c:166:6:vApplicationGetTimerTaskMemory	24	static
 ../Core/Src/freertos.c:180:6:MX_FREERTOS_Init	56	static
-../Core/Src/freertos.c:325:6:StartDefaultTask	16	static
+../Core/Src/freertos.c:317:6:StartDefaultTask	16	static

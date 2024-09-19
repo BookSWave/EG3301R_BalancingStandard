@@ -136,18 +136,35 @@ typedef struct{
 	joint_motor_t joint_motor[4];
 	float y;
 	float yL;
+	float yL1;
+	float yL2;
 	float yR;
+	float yR1;
+	float yR2;
 	float z_accel;
 	float vyL;
+	float vyL1;
+	float vyL2;
 	float vyR;
+	float vyR2;
+	float vyR1;
+	float vyspeedR2;
+	float vyspeedR1;
+	float vyspeedL1;
+	float vyspeedL2;
 	float vy;
 	float delta_y;
 	float delta_roll;
+	float delta_yR1;
+	float delta_yR2;
+	float delta_yL1;
+	float delta_yL2;
 	float y_set;
 	float roll_set;
-	float FL;
-	float FR;
-
+	float FL1;
+	float FL2;
+	float FR1;
+	float FR2;
 
 	float chassis_yaw;
 	float chassis_pitch;

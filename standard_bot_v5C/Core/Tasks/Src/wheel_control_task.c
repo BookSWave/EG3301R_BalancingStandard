@@ -169,7 +169,7 @@ void Ctrl_Task(void *arg)
 	double starttime = 0;
 	double endtime = 0;
 	double dt;
-	const float wheelRadius = 0.045f; //m，车轮半径
+	const float wheelRadius = 0.075f; //m，车轮半径
 	const float legMass = 0.01f; //kg，腿部质量
 
 	TickType_t xLastWakeTime = xTaskGetTickCount();

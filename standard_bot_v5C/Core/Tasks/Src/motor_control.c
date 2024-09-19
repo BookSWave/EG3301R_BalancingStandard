@@ -8,8 +8,11 @@
 #include "board_lib.h"
 #include "motor_control.h"
 #include "robot_config.h"
+#include "gimbal_control_task.h"
 
 extern motor_data_t can_motors[24];
+extern leg_move_t leg_move;
+extern void joint_motor_send_can(leg_move_t *leg_move,uint8_t id_one,uint8_t id_two,uint8_t id_three,uint8_t id_four);
 
 //todo: clean this place
 void yaw_pid(double setpoint, double curr_pt, pid_data_t *pid) {
@@ -221,6 +224,7 @@ void motor_send_RTOS(void *argument){
 	while (1)
 	{
 		motor_send_can(can_motors, Leftwheel_MOTOR_ID, Rightwheel_MOTOR_ID, 0, 0);
+		// joint_motor_send_can(&leg_move, L1_MOTOR_ID, L2_MOTOR_ID, R1_MOTOR_ID, R2_MOTOR_ID);
 		vTaskDelayUntil(&xLastWakeTime, 4);
 	}
 }
@@ -263,22 +267,22 @@ void motor_send_can(motor_data_t motor_all[], uint8_t id_one, uint8_t id_two, ui
 		CAN_send_data[7] = temp_converter;
 		HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, CAN_send_data, &send_mail_box);
 	}
-	if (temp_checker & 0x0000F0) {
-		CAN_tx_message.StdId = 0x1FF;
-		temp_converter = motor_all[0x4].rpm_pid.output;
-		CAN_send_data[0] = temp_converter >> 8;
-		CAN_send_data[1] = temp_converter;
-		temp_converter = motor_all[0x5].rpm_pid.output;
-		CAN_send_data[2] = temp_converter >> 8;
-		CAN_send_data[3] = temp_converter;
-		temp_converter = motor_all[0x6].rpm_pid.output;
-		CAN_send_data[4] = temp_converter >> 8;
-		CAN_send_data[5] = temp_converter;
-		temp_converter = motor_all[0x7].rpm_pid.output;
-		CAN_send_data[6] = temp_converter >> 8;
-		CAN_send_data[7] = temp_converter;
-		HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, CAN_send_data, &send_mail_box);
-	}
+//	 if (temp_checker & 0x0000F0) {
+//	 	CAN_tx_message.StdId = 0x1FF;
+//	 	temp_converter = motor_all[0x4].rpm_pid.output;
+//	 	CAN_send_data[0] = temp_converter >> 8;
+//	 	CAN_send_data[1] = temp_converter;
+//	 	temp_converter = motor_all[0x5].rpm_pid.output;
+//	 	CAN_send_data[2] = temp_converter >> 8;
+//	 	CAN_send_data[3] = temp_converter;
+//	 	temp_converter = motor_all[0x6].rpm_pid.output;
+//	 	CAN_send_data[4] = temp_converter >> 8;
+//	 	CAN_send_data[5] = temp_converter;
+//	 	temp_converter = motor_all[0x7].rpm_pid.output;
+//	 	CAN_send_data[6] = temp_converter >> 8;
+//	 	CAN_send_data[7] = temp_converter;
+//	 	HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, CAN_send_data, &send_mail_box);
+//	 }
 	if (temp_checker & 0x000F00) {
 		CAN_tx_message.StdId = 0x2FF;
 		temp_converter = motor_all[0x8].rpm_pid.output;

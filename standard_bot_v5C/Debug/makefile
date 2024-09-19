@@ -70,8 +70,8 @@ all: main-build
 main-build: standard_bot_v5C.elf secondary-outputs
 
 # Tool invocations
-standard_bot_v5C.elf standard_bot_v5C.map: $(OBJS) $(USER_OBJS) /Users/wallace/Downloads/standard_bot_v5C/STM32F407IGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "standard_bot_v5C.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/wallace/Downloads/standard_bot_v5C/STM32F407IGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="standard_bot_v5C.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+standard_bot_v5C.elf standard_bot_v5C.map: $(OBJS) $(USER_OBJS) /Users/wallace/Downloads/EG3301R_BalancingStandard/standard_bot_v5C/STM32F407IGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "standard_bot_v5C.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/wallace/Downloads/EG3301R_BalancingStandard/standard_bot_v5C/STM32F407IGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="standard_bot_v5C.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

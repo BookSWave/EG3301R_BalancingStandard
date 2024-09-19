@@ -75,7 +75,8 @@ Core/Tasks/Src/motor_control.o: ../Core/Tasks/Src/motor_control.c \
  ../Core/BSP/Inc/bsp_usb_redir.h ../Core/BSP/Inc/bsp_micros_timer.h \
  ../Core/BSP/Inc/CRC8_CRC16.h ../Core/Tasks/Inc/motor_control.h \
  ../Core/Tasks/Inc/robot_config.h ../Core/Tasks/Inc/typedefs.h \
- ../Core/Tasks/Inc/robot_config_DS.h
+ ../Core/Tasks/Inc/robot_config_DS.h \
+ ../Core/Tasks/Inc/gimbal_control_task.h
 ../Core/BSP/Inc/board_lib.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h:
@@ -168,3 +169,4 @@ Core/Tasks/Src/motor_control.o: ../Core/Tasks/Src/motor_control.c \
 ../Core/Tasks/Inc/robot_config.h:
 ../Core/Tasks/Inc/typedefs.h:
 ../Core/Tasks/Inc/robot_config_DS.h:
+../Core/Tasks/Inc/gimbal_control_task.h:
