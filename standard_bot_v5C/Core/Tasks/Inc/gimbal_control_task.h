@@ -9,10 +9,9 @@
 #define TASKS_INC_GIMBAL_CONTROL_TASK_H_
 
 void gimbal_control_task(void *argument);
-void leg_control(leg_move_t *leg_move_update);
+void leg_control(leg_move_t *leg_move_update, joint_motor_t *joint_motor);
 void gimbal_angle_control(motor_data_t *pitch_motor, motor_data_t *yaw_motor);
 void gimbal_pid_init();
-void jointmotor_control_loop(leg_move_t *leg_move_control_loop);
 
 
 #endif /* TASKS_INC_GIMBAL_CONTROL_TASK_H_ */

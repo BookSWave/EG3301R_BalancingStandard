@@ -107,6 +107,14 @@ typedef struct {
 	uint8_t temp;
 }raw_data_t;
 
+typedef struct{
+	uint16_t id;
+	int16_t raw_angle;
+	float angle;
+	float torque_set;
+	float current;
+}joint_motor_t;
+
 typedef struct
 {
 	double speed;			   // rad/s
@@ -125,43 +133,20 @@ typedef struct
 } LegPos;
 
 typedef struct{
-	uint16_t id;
-	int16_t raw_angle;
-	float angle;
-	float torque_set;
-	float current;
-	int16_t output;
-}joint_motor_t;
-
-typedef struct{
 	joint_motor_t joint_motor[4];
 	float y;
 	float yL;
-	float yL1;
-	float yL2;
 	float yR;
-	float yR1;
-	float yR2;
 	float z_accel;
 	float vyL;
-	float vyL1;
-	float vyL2;
 	float vyR;
-	float vyR2;
-	float vyR1;
 	float vy;
 	float delta_y;
 	float delta_roll;
-	float delta_yR1;
-	float delta_yR2;
-	float delta_yL1;
-	float delta_yL2;
 	float y_set;
 	float roll_set;
-	float FL1;
-	float FL2;
-	float FR1;
-	float FR2;
+	float FL;
+	float FR;
 
 
 	float chassis_yaw;
@@ -173,7 +158,6 @@ typedef struct{
 	float chassis_yaw_speed;
 	float chassis_pitch_speed;
 	float chassis_roll_speed;
-
 }leg_move_t;
 
 typedef struct

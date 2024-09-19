@@ -260,7 +260,7 @@ void gyro_offset_cali() {
 		gyro_z_total += (int16_t)(gyro_buff[5] << 8 | gyro_buff[4]);
 		HAL_Delay(2);
 	}
-	imu_data.gx_offset = gyro_x_total / 100 + 0.06;
+	imu_data.gx_offset = gyro_x_total / 100 + 0.06; //added offset
 	imu_data.gy_offset = gyro_y_total / 100;
 	imu_data.gz_offset = gyro_z_total / 100;
 

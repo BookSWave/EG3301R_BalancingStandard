@@ -1,7 +1,7 @@
-../Core/Tasks/Src/gimbal_control_task.c:63:6:joint_motor_init	16	static
-../Core/Tasks/Src/gimbal_control_task.c:74:6:gimbal_control_task	32	static
-../Core/Tasks/Src/gimbal_control_task.c:106:7:calculate_torque	24	static
-../Core/Tasks/Src/gimbal_control_task.c:120:6:leg_control	24	static
-../Core/Tasks/Src/gimbal_control_task.c:170:6:joint_motor_send_can	64	static
-../Core/Tasks/Src/gimbal_control_task.c:214:9:float_to_uint	32	static
-../Core/Tasks/Src/gimbal_control_task.c:224:6:jointmotor_control_loop	24	static
+../Core/Tasks/Src/gimbal_control_task.c:62:6:joint_motor_init	16	static
+../Core/Tasks/Src/gimbal_control_task.c:69:6:gimbal_control_task	32	static
+../Core/Tasks/Src/gimbal_control_task.c:109:7:limit_angle	24	static
+../Core/Tasks/Src/gimbal_control_task.c:123:6:leg_control	40	static
+../Core/Tasks/Src/gimbal_control_task.c:191:7:compute_y	32	static
+../Core/Tasks/Src/gimbal_control_task.c:221:13:jointmotor_control_loop	24	static
+../Core/Tasks/Src/gimbal_control_task.c:264:6:gimbal_angle_control	24	static

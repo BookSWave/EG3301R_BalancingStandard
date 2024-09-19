@@ -247,19 +247,19 @@
 #define L1_MOTOR_ID 		8//9
 #define L2_MOTOR_ID 		7//9
 
-#define L1_CENTER			7385
+#define L1_CENTER			1398
 #define L1_MAX_ANG			1.5
 #define L1_MIN_ANG			-1.5
 
-#define L2_CENTER			6295
+#define L2_CENTER			4156
 #define L2_MAX_ANG			1.5
 #define L2_MIN_ANG			-1.5
 
-#define R1_CENTER			2106
+#define R1_CENTER			0
 #define R1_MAX_ANG			1.5
 #define R1_MIN_ANG			-1.5
 
-#define R2_CENTER			7553
+#define R2_CENTER			1370
 #define R2_MAX_ANG			1.5
 #define R2_MIN_ANG			-1.5
 

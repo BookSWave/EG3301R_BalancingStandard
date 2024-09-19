@@ -232,14 +232,14 @@ void MX_FREERTOS_Init(void) {
 //	if (gimbal_event_group == NULL) {
 //		//error handler implement next time!
 //	} else {
-		xTaskCreate(gimbal_control_task, "gimbal_task",
-		configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 7,
-				&gimbal_control_task_handle);
+		// xTaskCreate(gimbal_control_task, "gimbal_task",
+		// configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 7,
+		// 		&gimbal_control_task_handle);
 //	}
 //new implementation
 	//todo: adjust priorities
 	//Threads creation
-	/* xTaskCreate(motor_calib_task, "motor_calib_task",
+	xTaskCreate(motor_calib_task, "motor_calib_task",
 	configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 9,
 			&motor_calib_task_handle);
 
@@ -265,7 +265,7 @@ void MX_FREERTOS_Init(void) {
 
 	xTaskCreate(motor_send_RTOS, "motor_send_RTOS",
 			512, (void*) 3, (UBaseType_t) 9,
-					&motor_send_RTOS_handle); */
+					&motor_send_RTOS_handle);
 
 	// xTaskCreate(leg_kinematic_task, "leg_kinematic",
 	// 		configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 8,
