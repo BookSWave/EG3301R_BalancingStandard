@@ -160,7 +160,7 @@ void leg_control(leg_move_t *leg_move_update) {
 
 
 }
-void joint_motor_send_can(leg_move_t *leg_move, uint8_t id_one,uint8_t id_two,uint8_t id_three,uint8_t id_four) {
+void joint_motor_send_can (leg_move_t *leg_move, uint8_t id_one,uint8_t id_two,uint8_t id_three,uint8_t id_four) {
 	CAN_TxHeaderTypeDef CAN_tx_message;
 	uint8_t CAN_send_data[8];
 	uint32_t send_mail_box;

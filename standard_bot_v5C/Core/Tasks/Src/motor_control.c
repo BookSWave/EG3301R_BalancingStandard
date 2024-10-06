@@ -224,7 +224,7 @@ void motor_send_RTOS(void *argument){
 	while (1)
 	{
 		motor_send_can(can_motors, Leftwheel_MOTOR_ID, Rightwheel_MOTOR_ID, 0, 0);
-		// joint_motor_send_can(&leg_move, L1_MOTOR_ID, L2_MOTOR_ID, R1_MOTOR_ID, R2_MOTOR_ID);
+		//joint_motor_send_can(&leg_move, L1_MOTOR_ID, L2_MOTOR_ID, R1_MOTOR_ID, R2_MOTOR_ID);
 		vTaskDelayUntil(&xLastWakeTime, 4);
 	}
 }
