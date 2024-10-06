@@ -1,0 +1,5 @@
+../Core/Tasks/Src/hud_task.c:36:6:hud_task	22
+../Core/Tasks/Src/hud_task.c:136:9:draw_char	1
+../Core/Tasks/Src/hud_task.c:145:6:draw_spinspin	4
+../Core/Tasks/Src/hud_task.c:206:6:draw_gearing	3
+../Core/Tasks/Src/hud_task.c:263:6:clear_hud	2

@@ -1,0 +1,6 @@
+../Core/Tasks/Src/motor_config.c:15:6:set_motor_config	6
+../Core/Tasks/Src/motor_config.c:97:6:config_motors	2
+../Core/Tasks/Src/motor_config.c:336:6:bz_buzzer	3
+../Core/Tasks/Src/motor_config.c:349:6:motor_temp_bz	3
+../Core/Tasks/Src/motor_config.c:367:10:check_motors	23
+../Core/Tasks/Src/motor_config.c:484:6:motor_calib_task	9

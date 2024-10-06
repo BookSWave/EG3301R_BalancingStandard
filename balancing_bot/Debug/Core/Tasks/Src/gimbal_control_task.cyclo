@@ -1,0 +1,4 @@
+../Core/Tasks/Src/gimbal_control_task.c:41:9:check_yaw	2
+../Core/Tasks/Src/gimbal_control_task.c:55:6:gimbal_control_task	3
+../Core/Tasks/Src/gimbal_control_task.c:99:6:gimbal_control	1
+../Core/Tasks/Src/gimbal_control_task.c:103:6:gimbal_angle_control	5

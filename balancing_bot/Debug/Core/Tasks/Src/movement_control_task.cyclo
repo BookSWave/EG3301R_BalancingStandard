@@ -1,0 +1,4 @@
+../Core/Tasks/Src/movement_control_task.c:40:6:b_pid_init	1
+../Core/Tasks/Src/movement_control_task.c:55:6:movement_control_task	3
+../Core/Tasks/Src/movement_control_task.c:116:6:chassis_MCU_send_CAN	1
+../Core/Tasks/Src/movement_control_task.c:124:6:chassis_motion_control	1

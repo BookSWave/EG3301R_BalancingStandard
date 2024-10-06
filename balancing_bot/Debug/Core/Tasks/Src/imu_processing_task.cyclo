@@ -1,0 +1,10 @@
+../Core/Tasks/Src/imu_processing_task.c:31:5:fusion	1
+../Core/Tasks/Src/imu_processing_task.c:80:8:low_pass_filter	1
+../Core/Tasks/Src/imu_processing_task.c:86:6:initIMUSensorFusion	1
+../Core/Tasks/Src/imu_processing_task.c:101:6:imu_sensor_fusion	1
+../Core/Tasks/Src/imu_processing_task.c:137:6:imu_proc_task_notif	2
+../Core/Tasks/Src/imu_processing_task.c:146:6:gyro_data_ready	5
+../Core/Tasks/Src/imu_processing_task.c:171:6:accel_data_ready	3
+../Core/Tasks/Src/imu_processing_task.c:192:6:mag_data_ready	1
+../Core/Tasks/Src/imu_processing_task.c:205:6:imu_processing_task	1
+../Core/Tasks/Src/imu_processing_task.c:219:6:imu_attitude_update	1

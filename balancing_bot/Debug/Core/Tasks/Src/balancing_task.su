@@ -1,0 +1,5 @@
+../Core/Tasks/Src/balancing_task.c:57:6:balancing_task	56	static
+../Core/Tasks/Src/balancing_task.c:94:6:Ctrl_TargetUpdateTask	24	static
+../Core/Tasks/Src/balancing_task.c:133:6:LegPos_UpdateTask	64	static
+../Core/Tasks/Src/balancing_task.c:180:6:Ctrl_Task	464	static
+../Core/Tasks/Src/balancing_task.c:397:6:Ctrl_Init	8	static

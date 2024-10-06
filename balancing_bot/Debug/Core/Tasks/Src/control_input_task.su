@@ -1,0 +1,12 @@
+../Core/Tasks/Src/control_input_task.c:44:6:control_input_task	64	static
+../Core/Tasks/Src/control_input_task.c:133:7:chassis_center_yaw	4	static
+../Core/Tasks/Src/control_input_task.c:137:6:chassis_set_ctrl	24	static
+../Core/Tasks/Src/control_input_task.c:144:6:chassis_kill_ctrl	4	static
+../Core/Tasks/Src/control_input_task.c:150:9:gimbal_aim_at_damaged_plate	16	static
+../Core/Tasks/Src/control_input_task.c:188:6:control_reset	8	static
+../Core/Tasks/Src/control_input_task.c:203:6:control_mode_change	24	static
+../Core/Tasks/Src/control_input_task.c:278:6:gimbal_turn_ang	24	static
+../Core/Tasks/Src/control_input_task.c:295:6:gimbal_set_ang	16	static
+../Core/Tasks/Src/control_input_task.c:306:6:set_gear	4	static
+../Core/Tasks/Src/control_input_task.c:347:6:chassis_yaw_pid_init	4	static
+../Core/Tasks/Src/control_input_task.c:356:6:dbus_reset	4	static
