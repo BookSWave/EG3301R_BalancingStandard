@@ -57,26 +57,26 @@ void leg_kinematic_task(void *argument) {
         dt = endtime - starttime;
         start_time = xTaskGetTickCount();
         starttime = get_microseconds();
-        g_can_motors[6].angle_rad= clamp_angle(g_can_motors[6].angle_rad,g_can_motors[6].angle_data.min_ang,g_can_motors[6].angle_data.max_ang);
-        g_can_motors[7].angle_rad= clamp_angle(g_can_motors[7].angle_rad,g_can_motors[7].angle_data.min_ang,g_can_motors[7].angle_data.max_ang);
+      //   g_can_motors[6].angle_data.adj_ang= clamp_angle(g_can_motors[6].angle_data.adj_ang,g_can_motors[6].angle_data.min_ang,g_can_motors[6].angle_data.max_ang);
+      //   g_can_motors[7].angle_data.adj_ang= clamp_angle(g_can_motors[7].angle_data.adj_ang,g_can_motors[7].angle_data.min_ang,g_can_motors[7].angle_data.max_ang);
 
         /////////
-       leg_pos(g_can_motors[6].angle_rad,g_can_motors[7].angle_rad,left_leg_pos); //8->4 9->5
+       leg_pos(g_can_motors[6].angle_data.adj_ang,g_can_motors[7].angle_data.adj_ang,left_leg_pos); //8->4 9->5
        leftLegPos.length = left_leg_pos[0];
        leftLegPos.angle = left_leg_pos[1];
-       leftLegPos.angle = leftLegPos.angle - PI/2;
+
     //    leg_pos(g_can_motors[6].angle_rad,g_can_motors[7].angle_rad,right_leg_pos);//17->6 16->7
     //    rightLegPos.length = right_leg_pos[0];
     //    rightLegPos.angle = right_leg_pos[1];
-       PID_Init(&left_F, 5, 0, 0.01, -1000, 1000); // Example gains: kp = 1.0, ki = 0.1, kd = 0.01, min_output = -10, max_output = 10
-       PID_Init(&left_Tp, 0.01, 0.01, 0.01, -10, 10); // Example gains: kp = 1.0, ki = 0.1, kd = 0.01, min_output = -10, max_output = 10
+       PID_Init(&left_F, 400, 0, 50, -10000, 10000); // Example gains: kp = 1.0, ki = 0.1, kd = 0.01, min_output = -10, max_output = 10
+       PID_Init(&left_Tp, 1, 0, 0.01, -10, 10); // Example gains: kp = 1.0, ki = 0.1, kd = 0.01, min_output = -10, max_output = 10
     //    PID_Init(&right_F, 5000, 0, 0.01, -1000, 1000); // Example gains: kp = 1.0, ki = 0.1, kd = 0.01, min_output = -10, max_output = 10
     //    PID_Init(&right_Tp, 0.01, 0.01, 0.01, -10, 10);
-       left_F_control = PID_Compute(&left_F, 0.18, leftLegPos.length, dt,0.001);
-      //  left_Tp_control = PID_Compute(&left_Tp, PI/2, leftLegPos.angle, dt,0.001);
+       left_F_control = PID_Compute(&left_F, 0.16, leftLegPos.length, dt,0.001);
+       left_Tp_control = PID_Compute(&left_Tp, PI/2, leftLegPos.angle, dt,0.001);
     //    right_F_control = PID_Compute(&right_F, 0.13, rightLegPos.length, dt,0.001);
     //    right_Tp_control = -PID_Compute(&right_Tp, 0, rightLegPos.angle, dt,0.001);
-       leg_conv(left_F_control,left_Tp_control,g_can_motors[6].angle_rad,g_can_motors[7].angle_rad,leftTorque);
+       leg_conv(left_F_control,left_Tp_control,g_can_motors[6].angle_data.adj_ang,g_can_motors[7].angle_data.adj_ang,leftTorque);
       //  leg_conv(right_F_control,right_Tp_control,g_can_motors[6].angle_rad,g_can_motors[7].angle_rad,rightTorque);
        g_can_motors[6].torque = leftTorque[0];
        g_can_motors[7].torque = leftTorque[1];
