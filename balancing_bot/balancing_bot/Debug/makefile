@@ -70,8 +70,8 @@ all: main-build
 main-build: balancing_bot.elf secondary-outputs
 
 # Tool invocations
-balancing_bot.elf balancing_bot.map: $(OBJS) $(USER_OBJS) D:\EG2606\yiming's\ balancing\ code\balancing_bot\balancing_bot\STM32F407IGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "balancing_bot.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\EG2606\yiming's balancing code\balancing_bot\balancing_bot\STM32F407IGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="balancing_bot.map" -Wl,--gc-sections -static  -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+balancing_bot.elf balancing_bot.map: $(OBJS) $(USER_OBJS) D:\EG2606\Wangbo\EG3301R_BalancingStandard\balancing_bot\balancing_bot\STM32F407IGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "balancing_bot.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\EG2606\Wangbo\EG3301R_BalancingStandard\balancing_bot\balancing_bot\STM32F407IGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="balancing_bot.map" -Wl,--gc-sections -static  -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -49,6 +49,7 @@ double PID_Compute(PID *pid, double setpoint, double measured_value, double dt, 
 
     pid->prev_error = error;
     pid->output =  output;
+    return output;
 }
 
 void PID_CascadeCalc(CascadePID *pid,float angleRef,float angleFdb,float speedFdb, double dt)

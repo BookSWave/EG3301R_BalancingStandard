@@ -283,8 +283,8 @@
 #define RIGHT_MOTOR_CENTER  0
 #define FR_MOTOR_CENTER     2250
 #define FL_MOTOR_CENTER     3486
-#define BR_MOTOR_CENTER     3264
-#define BL_MOTOR_CENTER     6327
+#define BR_MOTOR_CENTER     7390
+#define BL_MOTOR_CENTER     2000
 #endif
 #define FEEDER_MOTOR_ID		17
 #define LFRICTION_MOTOR_ID	16
