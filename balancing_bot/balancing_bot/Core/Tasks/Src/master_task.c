@@ -95,29 +95,29 @@ void master_task(void* argument){
 	/* add threads, ... */
 	//todo: adjust priorities
 	//Threads creation
-	xTaskCreate(Ctrl_Task, "Ctrl_Task_task",
-					configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
-							&Ctrl_Task_handle);
+	// xTaskCreate(Ctrl_Task, "Ctrl_Task_task",
+	// 				configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
+	// 						&Ctrl_Task_handle);
 
-	xTaskCreate(LegPos_UpdateTask, "LegPos_UpdateTask",
-				configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
-						&LegPos_UpdateTask_handle);
+	// xTaskCreate(LegPos_UpdateTask, "LegPos_UpdateTask",
+	// 			configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
+	// 					&LegPos_UpdateTask_handle);
 
-	xTaskCreate(Ctrl_TargetUpdateTask, "Ctrl_TargetUpdateTask",
-			configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
-					&Ctrl_TargetUpdateTask_handle);
+	// xTaskCreate(Ctrl_TargetUpdateTask, "Ctrl_TargetUpdateTask",
+	// 		configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
+	// 				&Ctrl_TargetUpdateTask_handle);
 
 	xTaskCreate(motors_process_task, "motor_process",
 		configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
 				&leg_kinematic_handle);
 
-	xTaskCreate(balancing_task, "balancing_task",
-			configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
-					&balancing_task_handle);
-
-	// xTaskCreate(leg_kinematic_task, "leg_kinematic",
+	// xTaskCreate(balancing_task, "balancing_task",
 	// 		configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
-	// 				&motors_process_handle);
+	// 				&balancing_task_handle);
+
+	xTaskCreate(leg_kinematic_task, "leg_kinematic",
+			configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
+					&motors_process_handle);
 
 	xTaskCreate(imu_processing_task, "IMU_task",
 	configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 15,

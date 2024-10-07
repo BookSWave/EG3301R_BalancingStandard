@@ -48,10 +48,10 @@ void motors_process_task(void *argument) {
         dt = endtime - starttime;
         start_time = xTaskGetTickCount();
         raw_angle_to_rad(g_can_motors); // Pass the array directly
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[4], -1.5+3, 1);//3.62+PI+ // left joint[1]
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[5], -5.85-PI+3.25, 1); // leftjoint[0]
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[6], -4.66+PI, 1);
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[7], 0.53, 1);
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[4], +1.57, 1);//3.62+PI+ // left joint[1]
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[5], +0.48, 1); // leftjoint[0]
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[6], -1.5, 1);
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[7], 0.53-1.103+1.07, 1);
         motors_raw_angle_to_desired_angle_dir(&g_can_motors[1], 0, -1);
         motors_raw_angle_to_desired_angle_dir(&g_can_motors[0], 0, 1);
         motors_torque_to_current_6020(&g_can_motors[4],0,1.0);

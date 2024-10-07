@@ -74,11 +74,11 @@ void balancing_task(void *argument) {
         target.speedCmd = ((float)g_remote_cmd.left_y/660)*1.0f;
         target.yawSpeedCmd = -((float)g_remote_cmd.left_x/660)*2.0f;
         target.legLength = ((float)g_remote_cmd.right_y/660)*0.04 + 0.16f;
-        leftJoint[1].angle = (double)g_can_motors[4].angle_rad;
+        leftJoint[1].angle = (double)g_can_motors[4].angle_rad;//larger angle
         leftJoint[1].speed = (double)g_can_motors[4].speed;
         leftJoint[0].angle = (double)g_can_motors[5].angle_rad;
         leftJoint[0].speed = (double)g_can_motors[5].speed;
-        rightJoint[1].angle = (double)g_can_motors[6].angle_rad;
+        rightJoint[1].angle = (double)g_can_motors[6].angle_rad;//larger angle
         rightJoint[1].speed = (double)g_can_motors[6].speed;
         rightJoint[0].angle = (double)g_can_motors[7].angle_rad;
         rightJoint[0].speed = (double)g_can_motors[7].speed;
@@ -382,14 +382,14 @@ void Ctrl_Task(void *arg)
 //		Motor_SetTorque(&leftJoint[1], -leftJointTorque[1]);
 //		Motor_SetTorque(&rightJoint[0], -rightJointTorque[0]);
 //		Motor_SetTorque(&rightJoint[1], -rightJointTorque[1]);
-		g_can_motors[5].torque = leftJointTorque[0];
-		g_can_motors[4].torque = leftJointTorque[1];
-		g_can_motors[7].torque = rightJointTorque[0];
-		g_can_motors[6].torque = rightJointTorque[1];
-		l1 = leftJointTorque[0];
-		l4 = leftJointTorque[1];
-		r1 = rightJointTorque[0];
-		r4 = rightJointTorque[1];
+//		g_can_motors[5].torque = leftJointTorque[0];
+//		g_can_motors[4].torque = leftJointTorque[1];
+//		g_can_motors[7].torque = rightJointTorque[0];
+//		g_can_motors[6].torque = rightJointTorque[1];
+//		l1 = leftJointTorque[0];
+//		l4 = leftJointTorque[1];
+//		r1 = rightJointTorque[0];
+//		r4 = rightJointTorque[1];
 
 		vTaskDelayUntil(&xLastWakeTime, 4); //4ms控制周期
 	}
