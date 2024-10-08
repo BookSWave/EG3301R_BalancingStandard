@@ -34,14 +34,14 @@ void motors_process_task(void *argument) {
 	vTaskDelay(5);
 	double leftWheel_offset = (double)g_can_motors[LEFT_MOTOR_ID-1].raw_data.angle[0];
 	double rightWheel_offset = (double)g_can_motors[RIGHT_MOTOR_ID-1].raw_data.angle[0];
-	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.kp = 5000;
-	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.kp = 5000;
+	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.kp = 500;
+	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.kp = 500;
 	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.ki = 0;
 	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.ki = 0;
 	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.kd = 0;
 	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.kd = 0;
-	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.max_out = 10000;
-	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.max_out = 10000;
+	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.max_out = 2000;
+	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.max_out = 2000;
     TickType_t start_time;
     while (1) {
         endtime = get_microseconds();
