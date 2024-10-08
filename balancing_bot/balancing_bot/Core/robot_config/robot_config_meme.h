@@ -273,26 +273,20 @@
 //ADD 4 TO GM6020 IDS i.e. flashing 5 times = ID 9
 //#define CHASSIS_MCU
 #ifndef CHASSIS_MCU
-#define LEFT_MOTOR_ID 		1
-#define RIGHT_MOTOR_ID 		2
-#define FR_MOTOR_ID 		5
-#define FL_MOTOR_ID 		6
-#define BL_MOTOR_ID 		7
-#define BR_MOTOR_ID 		8
-#define LEFT_MOTOR_CENTER   0
-#define RIGHT_MOTOR_CENTER  0
-#define FR_MOTOR_CENTER     2250
-#define FL_MOTOR_CENTER     3486
-#define BR_MOTOR_CENTER     7390
-#define BL_MOTOR_CENTER     2000
+#define LEFT_MOTOR_ID 		1//15
+#define RIGHT_MOTOR_ID 		2//13
+#define FR_MOTOR_ID 		5//9
+#define FL_MOTOR_ID 		6//10
+#define BL_MOTOR_ID 		7//17
+#define BR_MOTOR_ID 		8//18
 #endif
-#define FEEDER_MOTOR_ID		17
-#define LFRICTION_MOTOR_ID	16
-#define RFRICTION_MOTOR_ID	15
+#define FEEDER_MOTOR_ID		10//7
+#define LFRICTION_MOTOR_ID	17//6
+#define RFRICTION_MOTOR_ID	18//5
 
 //NOTE: two motors CANNOT have the same __flashing__ number (i.e. GM6020 id 9 cannot be used
 //with any id 6 motors
-#define PITCH_MOTOR_ID 		18
+#define PITCH_MOTOR_ID 		19//8
 #ifndef CHASSIS_MCU
 #define YAW_MOTOR_ID 		20
 #endif

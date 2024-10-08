@@ -141,7 +141,7 @@ void config_motors() {
 	motor_id = FR_MOTOR_ID - 1;
 	g_can_motors[motor_id].motor_type = TYPE_GM6020;
 	set_motor_config(&g_can_motors[motor_id]);
-	g_can_motors[motor_id].angle_data.center_ang = FR_MOTOR_CENTER;
+	g_can_motors[motor_id].angle_data.center_ang = 0;
 	g_can_motors[motor_id].angle_data.phy_max_ang = 2 * PI;
 	g_can_motors[motor_id].angle_data.phy_min_ang = -2 * PI;
 	g_can_motors[motor_id].rpm_pid.kp = CHASSIS_KP;
@@ -157,7 +157,7 @@ void config_motors() {
 	motor_id = FL_MOTOR_ID - 1;
 	g_can_motors[motor_id].motor_type = TYPE_GM6020;
 	set_motor_config(&g_can_motors[motor_id]);
-	g_can_motors[motor_id].angle_data.center_ang = FL_MOTOR_CENTER;
+	g_can_motors[motor_id].angle_data.center_ang = 0;
 	g_can_motors[motor_id].angle_data.phy_max_ang = 2 * PI;
 	g_can_motors[motor_id].angle_data.phy_min_ang = -2 * PI;
 	g_can_motors[motor_id].angle_data.wheel_circ = WHEEL_CIRC;
@@ -173,9 +173,9 @@ void config_motors() {
 	motor_id = BL_MOTOR_ID - 1;
 	g_can_motors[motor_id].motor_type = TYPE_GM6020;
 	set_motor_config(&g_can_motors[motor_id]);
-	g_can_motors[motor_id].angle_data.center_ang = BL_MOTOR_CENTER;
-	g_can_motors[motor_id].angle_data.max_ang = 2.967;//170
-	g_can_motors[motor_id].angle_data.min_ang = PI/2;
+	g_can_motors[motor_id].angle_data.center_ang = 0;
+	g_can_motors[motor_id].angle_data.max_ang = 0;
+	g_can_motors[motor_id].angle_data.min_ang = 0;
 	g_can_motors[motor_id].angle_data.phy_max_ang = 2 * PI;
 	g_can_motors[motor_id].angle_data.phy_min_ang = -2 * PI;
 	g_can_motors[motor_id].angle_data.wheel_circ = WHEEL_CIRC;
@@ -197,8 +197,8 @@ void config_motors() {
 	motor_id = BR_MOTOR_ID - 1;
 	g_can_motors[motor_id].motor_type = TYPE_GM6020;
 	set_motor_config(&g_can_motors[motor_id]);
-	g_can_motors[motor_id].angle_data.center_ang = BR_MOTOR_CENTER;
-	g_can_motors[motor_id].angle_data.max_ang = 1.396;//80deg
+	g_can_motors[motor_id].angle_data.center_ang = 0;
+	g_can_motors[motor_id].angle_data.max_ang = 0;
 	g_can_motors[motor_id].angle_data.min_ang = 0;
 	g_can_motors[motor_id].angle_data.phy_max_ang = 2 * PI;
 	g_can_motors[motor_id].angle_data.phy_min_ang = -2 * PI;

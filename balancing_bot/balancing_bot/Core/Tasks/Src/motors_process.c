@@ -32,40 +32,53 @@ void motors_process_task(void *argument) {
 	double endtime = 0;
 	double dt;
 	vTaskDelay(5);
-	double leftWheel_offset = (double)g_can_motors[1].raw_data.angle[0];
-	double rightWheel_offset = (double)g_can_motors[0].raw_data.angle[0];
-	g_can_motors[1].rpm_pid.kp = 5000;
-	g_can_motors[0].rpm_pid.kp = 5000;
-	g_can_motors[1].rpm_pid.ki = 0;
-	g_can_motors[0].rpm_pid.ki = 0;
-	g_can_motors[1].rpm_pid.kd = 0;
-	g_can_motors[0].rpm_pid.kd = 0;
-	g_can_motors[1].rpm_pid.max_out = 10000;
-	g_can_motors[0].rpm_pid.max_out = 10000;
+	double leftWheel_offset = (double)g_can_motors[LEFT_MOTOR_ID-1].raw_data.angle[0];
+	double rightWheel_offset = (double)g_can_motors[RIGHT_MOTOR_ID-1].raw_data.angle[0];
+	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.kp = 5000;
+	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.kp = 5000;
+	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.ki = 0;
+	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.ki = 0;
+	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.kd = 0;
+	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.kd = 0;
+	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.max_out = 10000;
+	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.max_out = 10000;
     TickType_t start_time;
     while (1) {
         endtime = get_microseconds();
         dt = endtime - starttime;
         start_time = xTaskGetTickCount();
         raw_angle_to_rad(g_can_motors); // Pass the array directly
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[4], +1.57, 1);//3.62+PI+ // left joint[1]
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[5], +0.48, 1); // leftjoint[0]
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[6], 0-1.62, 1);
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[7], -5.76, 1);
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[1], 0, -1);
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[0], 0, 1);
-        motors_torque_to_current_6020(&g_can_motors[4],0,1.0);
-        motors_torque_to_current_6020(&g_can_motors[5],0,1.0);
-        motors_torque_to_current_6020(&g_can_motors[6],0,1.0);
-        motors_torque_to_current_6020(&g_can_motors[7],0,1.0);
-        motors_torque_to_current_3508_gearbox(&g_can_motors[0],15,1.0);
-        motors_torque_to_current_3508_gearbox(&g_can_motors[1],15,-1.0);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FR_MOTOR_ID-1], 3.62+PI, -1);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FL_MOTOR_ID-1], 3.62, -1);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BL_MOTOR_ID-1], -0.531, 1);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BR_MOTOR_ID-1], -3.62, 1);
+        //kind of working
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FR_MOTOR_ID-1], 0.95, -1);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FL_MOTOR_ID-1], 0, 1);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BL_MOTOR_ID-1], 4.19, -1);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BR_MOTOR_ID-1], 0, 1);
+
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FR_MOTOR_ID-1], PI/2, 1);
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FL_MOTOR_ID-1], 0.51, 1);
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BL_MOTOR_ID-1], -3.11+PI/2, 1);
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BR_MOTOR_ID-1], -5.75, 1);
+
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[LEFT_MOTOR_ID-1], 0, -1);
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[RIGHT_MOTOR_ID-1], 0, 1);
+
+        motors_torque_to_current_6020(&g_can_motors[FR_MOTOR_ID-1],0,-1.0);
+        motors_torque_to_current_6020(&g_can_motors[FL_MOTOR_ID-1],0,-1.0);
+        motors_torque_to_current_6020(&g_can_motors[BL_MOTOR_ID-1],0,1.0);
+        motors_torque_to_current_6020(&g_can_motors[BR_MOTOR_ID-1],0,1.0);
+
+        motors_torque_to_current_3508_gearbox(&g_can_motors[RIGHT_MOTOR_ID-1],15,1.0);
+        motors_torque_to_current_3508_gearbox(&g_can_motors[LEFT_MOTOR_ID-1],15,-1.0);
 
 
-        speed_pid((double)g_can_motors[1].torque ,(double)g_can_motors[1].raw_data.rpm/1000, &g_can_motors[1].rpm_pid);
-        speed_pid((double)g_can_motors[0].torque ,(double)g_can_motors[0].raw_data.rpm/1000, &g_can_motors[0].rpm_pid);
-//        g_can_motors[1].output = g_can_motors[1].rpm_pid.output;
-//        g_can_motors[0].output = g_can_motors[0].rpm_pid.output;
+        speed_pid((double)g_can_motors[LEFT_MOTOR_ID-1].torque ,(double)g_can_motors[LEFT_MOTOR_ID-1].raw_data.rpm/1000, &g_can_motors[LEFT_MOTOR_ID-1].rpm_pid);
+        speed_pid((double)g_can_motors[RIGHT_MOTOR_ID-1].torque ,(double)g_can_motors[RIGHT_MOTOR_ID-1].raw_data.rpm/1000, &g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid);
+//        g_can_motors[LEFT_MOTOR_ID-1].output = g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.output;
+//        g_can_motors[RIGHT_MOTOR_ID-1].output = g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.output;
         starttime = get_microseconds();
 
 

@@ -1,5 +1,6 @@
-../Core/Tasks/Src/balancing_task.c:57:6:balancing_task	1
-../Core/Tasks/Src/balancing_task.c:94:6:Ctrl_TargetUpdateTask	7
-../Core/Tasks/Src/balancing_task.c:133:6:LegPos_UpdateTask	1
-../Core/Tasks/Src/balancing_task.c:180:6:Ctrl_Task	41
-../Core/Tasks/Src/balancing_task.c:397:6:Ctrl_Init	1
+../Core/Tasks/Src/balancing_task.c:53:6:balancing_task	1
+../Core/Tasks/Src/balancing_task.c:90:6:Ctrl_TargetUpdateTask	7
+../Core/Tasks/Src/balancing_task.c:130:6:LegPos_UpdateTask	1
+../Core/Tasks/Src/balancing_task.c:171:6:Ctrl_StandupPrepareTask	1
+../Core/Tasks/Src/balancing_task.c:177:6:Ctrl_Task	42
+../Core/Tasks/Src/balancing_task.c:391:6:Ctrl_Init	1

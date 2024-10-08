@@ -158,79 +158,79 @@ void buzzing_task(void *argument) {
 			}
 			break;
 		case ok:
-			last_wake_time = xTaskGetTickCount();
-			buzzer(BUZZER_HIGH);
-			vTaskDelay(BUZZ_TIME);
-			buzzer(0);
-			vTaskDelay(GAP_TIME);
-			buzzer(BUZZER_LOW);
-			vTaskDelay(BUZZ_TIME);
+//			last_wake_time = xTaskGetTickCount();
+//			buzzer(BUZZER_HIGH);
+//			vTaskDelay(BUZZ_TIME);
+//			buzzer(0);
+//			vTaskDelay(GAP_TIME);
+//			buzzer(BUZZER_LOW);
+//			vTaskDelay(BUZZ_TIME);
 			break;
 		case not_ok:
-			last_wake_time = xTaskGetTickCount();
-			buzzer(BUZZER_HIGH);
-			vTaskDelay(BUZZ_TIME);
-			buzzer(0);
-			vTaskDelay(GAP_TIME);
-			buzzer(BUZZER_LOW);
-			vTaskDelay(BUZZ_TIME);
-			buzzer(0);
-			vTaskDelay(GAP_TIME);
-			buzzer(BUZZER_HIGH);
-			vTaskDelay(BUZZ_TIME);
-			buzzer(0);
+//			last_wake_time = xTaskGetTickCount();
+//			buzzer(BUZZER_HIGH);
+//			vTaskDelay(BUZZ_TIME);
+//			buzzer(0);
+//			vTaskDelay(GAP_TIME);
+//			buzzer(BUZZER_LOW);
+//			vTaskDelay(BUZZ_TIME);
+//			buzzer(0);
+//			vTaskDelay(GAP_TIME);
+//			buzzer(BUZZER_HIGH);
+//			vTaskDelay(BUZZ_TIME);
+//			buzzer(0);
 			break;
 		case control_control:
-			last_wake_time = xTaskGetTickCount();
-			buzzer(BUZZER_LOW);
-			vTaskDelay(BUZZ_TIME);
-			buzzer(0);
-			vTaskDelay(GAP_TIME);
-			buzzer(BUZZER_LOW);
-			vTaskDelay(BUZZ_TIME);
+//			last_wake_time = xTaskGetTickCount();
+//			buzzer(BUZZER_LOW);
+//			vTaskDelay(BUZZ_TIME);
+//			buzzer(0);
+//			vTaskDelay(GAP_TIME);
+//			buzzer(BUZZER_LOW);
+//			vTaskDelay(BUZZ_TIME);
 			break;
 		case control_keyboard:
-			last_wake_time = xTaskGetTickCount();
-			buzzer(BUZZER_HIGH);
-			vTaskDelay(BUZZ_TIME);
-			buzzer(0);
-			vTaskDelay(GAP_TIME);
-			buzzer(BUZZER_HIGH);
-			vTaskDelay(BUZZ_TIME);
-			buzzer(BUZZ_TIME);
+//			last_wake_time = xTaskGetTickCount();
+//			buzzer(BUZZER_HIGH);
+//			vTaskDelay(BUZZ_TIME);
+//			buzzer(0);
+//			vTaskDelay(GAP_TIME);
+//			buzzer(BUZZER_HIGH);
+//			vTaskDelay(BUZZ_TIME);
+//			buzzer(BUZZ_TIME);
 			break;
 
 		case control_sbc:
-			buzzer(BUZZER_LOW);
-			vTaskDelay(BUZZ_TIME);
-			buzzer((BUZZER_HIGH+BUZZER_LOW)/2);
-			vTaskDelay(BUZZ_TIME);
-			buzzer(BUZZER_HIGH);;
-			vTaskDelay(BUZZ_TIME);
+//			buzzer(BUZZER_LOW);
+//			vTaskDelay(BUZZ_TIME);
+//			buzzer((BUZZER_HIGH+BUZZER_LOW)/2);
+//			vTaskDelay(BUZZ_TIME);
+//			buzzer(BUZZER_HIGH);;
+//			vTaskDelay(BUZZ_TIME);
 			break;
 
 
 		case bz_debug_low:
-			buzzer(DEBUG_LOW_FREQ);
-			vTaskDelay(BUZZ_TIME);
+//			buzzer(DEBUG_LOW_FREQ);
+//			vTaskDelay(BUZZ_TIME);
 			break;
 
 		case bz_debug_high:
-			buzzer(DEBUG_HIGH_FREQ);
-			vTaskDelay(BUZZ_TIME);
+//			buzzer(DEBUG_HIGH_FREQ);
+//			vTaskDelay(BUZZ_TIME);
 			break;
 
 		case bz_debug_rest:
-			buzzer(0);
-			vTaskDelay(GAP_TIME);
+//			buzzer(0);
+//			vTaskDelay(GAP_TIME);
 			break;
 		case bz_high:
-			buzzer(BUZZER_HIGH);
-			vTaskDelay(BUZZ_TIME);
+//			buzzer(BUZZER_HIGH);
+//			vTaskDelay(BUZZ_TIME);
 			break;
 		case bz_low:
-			buzzer(BUZZER_LOW);
-			vTaskDelay(BUZZ_TIME);
+//			buzzer(BUZZER_LOW);
+//			vTaskDelay(BUZZ_TIME);
 			break;
 		case bz_debug_hi_temp:
 			buzzer(DEBUG_HI_TEMP1);
@@ -245,13 +245,13 @@ void buzzing_task(void *argument) {
 			vTaskDelay(BUZZ_TIME);
 			break;
 		case bz_temp_low:
-			buzzer(DEBUG_HI_TEMP3);
-			vTaskDelay(BUZZ_TIME);
+//			buzzer(DEBUG_HI_TEMP3);
+//			vTaskDelay(BUZZ_TIME);
 			break;
 		default:
 			break;
 		}
-		buzzer(0);
+//		buzzer(0);
 		vTaskDelay(GAP_TIME);
 	}
 

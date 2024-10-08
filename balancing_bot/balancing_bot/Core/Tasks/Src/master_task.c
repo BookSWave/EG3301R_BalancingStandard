@@ -24,7 +24,6 @@
 #include "PID.h"
 #include "leg_kinematic_task.h"
 #include "balancing_task.h"
-#include "motor_control.h"
 
 
 #define ISR_SEMAPHORE_COUNT 1
@@ -95,25 +94,25 @@ void master_task(void* argument){
 	/* add threads, ... */
 	//todo: adjust priorities
 	//Threads creation
-	// xTaskCreate(Ctrl_Task, "Ctrl_Task_task",
-	// 				configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
-	// 						&Ctrl_Task_handle);
+	xTaskCreate(Ctrl_Task, "Ctrl_Task_task",
+					configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
+							&Ctrl_Task_handle);
 
-	// xTaskCreate(LegPos_UpdateTask, "LegPos_UpdateTask",
-	// 			configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
-	// 					&LegPos_UpdateTask_handle);
+	xTaskCreate(LegPos_UpdateTask, "LegPos_UpdateTask",
+				configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
+						&LegPos_UpdateTask_handle);
 
-	// xTaskCreate(Ctrl_TargetUpdateTask, "Ctrl_TargetUpdateTask",
-	// 		configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
-	// 				&Ctrl_TargetUpdateTask_handle);
+	xTaskCreate(Ctrl_TargetUpdateTask, "Ctrl_TargetUpdateTask",
+			configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
+					&Ctrl_TargetUpdateTask_handle);
 
 	xTaskCreate(motors_process_task, "motor_process",
 		configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
 				&leg_kinematic_handle);
 
-	// xTaskCreate(balancing_task, "balancing_task",
-	// 		configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
-	// 				&balancing_task_handle);
+	xTaskCreate(balancing_task, "balancing_task",
+			configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
+					&balancing_task_handle);
 
 	xTaskCreate(leg_kinematic_task, "leg_kinematic",
 			configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 4,
@@ -158,13 +157,8 @@ void master_task(void* argument){
 			&control_input_task_handle);
 	xTaskCreate(referee_processing_task, "referee_task", 512, (void*) 1,
 			(UBaseType_t) 2, &referee_processing_task_handle);
-
-	// xTaskCreate(motor_control_task, "motor_control_task", 512, (void*) 3,
-	// 		(UBaseType_t) 8, &motor_control_task_handle);
-
-	xTaskCreate(motor_control_task, "motor_control", 512, (void*) 3,
+	xTaskCreate(motor_control_task, "motor_control_task", 512, (void*) 3,
 			(UBaseType_t) 8, &motor_control_task_handle);
-
 	xTaskCreate(buzzing_task, "buzzer_task",
 	configMINIMAL_STACK_SIZE, (void*) 1, (UBaseType_t) 1, &buzzing_task_handle);
 	if (usb_continue_semaphore == NULL) {

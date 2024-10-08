@@ -97,7 +97,7 @@ Core/Tasks/Src/master_task.o: ../Core/Tasks/Src/master_task.c \
  ../Core/Tasks/Inc/motor_control_task.h ../Core/Tasks/Inc/hud_task.h \
  ../Core/Tasks/Inc/motors_process.h ../Core/Tasks/Inc/PID.h \
  ../Core/Tasks/Inc/leg_kinematic_task.h \
- ../Core/Tasks/Inc/balancing_task.h ../Core/Tasks/Inc/motor_control.h
+ ../Core/Tasks/Inc/balancing_task.h
 ../Core/BSP/Inc/board_lib.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h:
@@ -215,4 +215,3 @@ Core/Tasks/Src/master_task.o: ../Core/Tasks/Src/master_task.c \
 ../Core/Tasks/Inc/PID.h:
 ../Core/Tasks/Inc/leg_kinematic_task.h:
 ../Core/Tasks/Inc/balancing_task.h:
-../Core/Tasks/Inc/motor_control.h:

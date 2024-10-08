@@ -9,8 +9,6 @@
 #include "motor_control.h"
 #include "robot_config.h"
 
-extern motor_data_t g_can_motors[24];
-
 
 //todo: clean this place
 void yaw_pid(double setpoint, double curr_pt, pid_data_t *pid) {
@@ -239,23 +237,7 @@ void speed_pid(double setpoint, double curr_pt, pid_data_t *pid) {
  * @param id_two	id number of second motor to send can message to
  * @param id_three	id number of third motor to send can message to
  * @param id_four	id number of fourth motor to send can message to
- * 
- * 
  */
-
-
-void motor_send_can_RTOS(void *argument){
-	TickType_t xLastWakeTime = xTaskGetTickCount();
-	while(1){
-	motor_send_can(g_can_motors,LEFT_MOTOR_ID,RIGHT_MOTOR_ID,0,0);
-	vTaskDelay(1);
-
-	motor_send_can(g_can_motors,FL_MOTOR_ID,FR_MOTOR_ID,BL_MOTOR_ID,BR_MOTOR_ID);
-	
-	vTaskDelayUntil(&xLastWakeTime,4);
-}
-}
-
 void motor_send_can(motor_data_t motor_all[],
 		uint8_t id_one,
 		uint8_t id_two,
