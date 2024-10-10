@@ -2,5 +2,5 @@
 ../Core/Tasks/Src/balancing_task.c:90:6:Ctrl_TargetUpdateTask	24	static
 ../Core/Tasks/Src/balancing_task.c:130:6:LegPos_UpdateTask	64	static
 ../Core/Tasks/Src/balancing_task.c:171:6:Ctrl_StandupPrepareTask	8	static
-../Core/Tasks/Src/balancing_task.c:177:6:Ctrl_Task	464	static
-../Core/Tasks/Src/balancing_task.c:391:6:Ctrl_Init	8	static
+../Core/Tasks/Src/balancing_task.c:177:6:Ctrl_Task	488	static
+../Core/Tasks/Src/balancing_task.c:395:6:Ctrl_Init	8	static

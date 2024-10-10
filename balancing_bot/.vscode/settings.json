@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "imu_processing_task.h": "c",
-        "can_msg_processor.h": "c"
-    }
-}

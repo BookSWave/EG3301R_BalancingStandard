@@ -74,10 +74,10 @@ void balancing_task(void *argument) {
         leftJoint[1].speed = (double)g_can_motors[FR_MOTOR_ID-1].speed;
         leftJoint[0].angle = (double)g_can_motors[FL_MOTOR_ID-1].angle_rad;
         leftJoint[0].speed = (double)g_can_motors[FL_MOTOR_ID-1].speed;
-        rightJoint[1].angle = (double)g_can_motors[BL_MOTOR_ID-1].angle_rad;
-        rightJoint[1].speed = (double)g_can_motors[BL_MOTOR_ID-1].speed;
-        rightJoint[0].angle = (double)g_can_motors[BR_MOTOR_ID-1].angle_rad;
-        rightJoint[0].speed = (double)g_can_motors[BR_MOTOR_ID-1].speed;
+        rightJoint[1].angle = (double)g_can_motors[BR_MOTOR_ID-1].angle_rad;
+        rightJoint[1].speed = (double)g_can_motors[BR_MOTOR_ID-1].speed;
+        rightJoint[0].angle = (double)g_can_motors[BL_MOTOR_ID-1].angle_rad;
+        rightJoint[0].speed = (double)g_can_motors[BL_MOTOR_ID-1].speed;
         leftWheel.angle = (double)g_can_motors[LEFT_MOTOR_ID-1].angle_rad/19.2;
         rightWheel.angle = (double)g_can_motors[RIGHT_MOTOR_ID-1].angle_rad/19.2;
         leftWheel.speed = -(double)g_can_motors[LEFT_MOTOR_ID-1].raw_data.rpm * (2*PI/60) /19.2;
@@ -188,7 +188,8 @@ void Ctrl_Task(void *arg)
 	//Manually apply a coefficient to the feedback matrix for manually optimizing control performance
 	float kRatio[2][6] = {{1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
 						{1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}};
-	float lqrTpRatio = 1.0f, lqrTRatio = 1.0f;
+//	float lqrTpRatio = 1.0f, lqrTRatio = 1.0f;
+	float lqrTpRatio = 0.1f, lqrTRatio = 0.1f;
 
 	//Set initial target values
 	target.rollAngle = 0.0f;
@@ -259,8 +260,8 @@ void Ctrl_Task(void *arg)
 		{
 //			Motor_SetTorque(&leftWheel, -lqrOutT * lqrTRatio - yawPID.output);
 //			Motor_SetTorque(&rightWheel, -lqrOutT * lqrTRatio + yawPID.output);
-			g_can_motors[LEFT_MOTOR_ID-1].torque = -lqrOutT * lqrTRatio + yawPID.output;
-			g_can_motors[RIGHT_MOTOR_ID-1].torque = -lqrOutT * lqrTRatio - yawPID.output;
+//			g_can_motors[LEFT_MOTOR_ID-1].torque = -lqrOutT * lqrTRatio + yawPID.output;
+//			g_can_motors[RIGHT_MOTOR_ID-1].torque = -lqrOutT * lqrTRatio - yawPID.output;
 		}
 		else //Leg-off-ground state, turn off wheel motors
 		{
@@ -272,17 +273,20 @@ void Ctrl_Task(void *arg)
 
 		//Adjust target leg length based on ground contact state, and compute leg length PID output
 //		PID_Compute(&legLengthPID, (groundDetector.isTouchingGround && !groundDetector.isCuchioning) ? target.legLength : 0.2f, legLength,0.004,0.001);
-		PID_Compute(&legLengthPID, (groundDetector.isTouchingGround && !groundDetector.isCuchioning) ? target.legLength : 0.15f, legLength,0.004,0.001);
+		PID_Compute(&legLengthPID, (groundDetector.isTouchingGround && !groundDetector.isCuchioning) ? target.legLength : 0.13f, legLength,0.004,0.001);
 		//Calculate roll axis PID output
 		PID_Compute(&rollPID, target.rollAngle, imu_heading.rol,0.004,0.001);
 		//Calculate the push force for each leg, ignore roll PID output and feedforward when legs are off the ground
-		double leftForce = legLengthPID.output + ((groundDetector.isTouchingGround && !groundDetector.isCuchioning) ? +rollPID.output : 0) + 13;
-		double rightForce = legLengthPID.output + ((groundDetector.isTouchingGround && !groundDetector.isCuchioning) ? -rollPID.output : 0) + 13;
+//		double leftForce = legLengthPID.output + ((groundDetector.isTouchingGround && !groundDetector.isCuchioning) ? +rollPID.output : 0) + 13;
+//		double rightForce = legLengthPID.output + ((groundDetector.isTouchingGround && !groundDetector.isCuchioning) ? -rollPID.output : 0) + 13;
+		double leftForce = legLengthPID.output + ((groundDetector.isTouchingGround && !groundDetector.isCuchioning) ? +rollPID.output : 0) + 5;
+		double rightForce = legLengthPID.output + ((groundDetector.isTouchingGround && !groundDetector.isCuchioning) ? -rollPID.output : 0) + 5;
+
 //		double leftForce = legLengthPID.output + 5.0;
 //		double rightForce = legLengthPID.output + 5.0;
-		if(leftLegPos.length > 0.15f) //Protect the leg from extending too long
-			leftForce -= (leftLegPos.length - 0.1f) * 1;
-		if(rightLegPos.length > 0.15f)
+		if(leftLegPos.length < -0.13f) //Protect the leg from extending too long
+			leftForce += (leftLegPos.length - 0.1f) * 1;
+		if(rightLegPos.length > 0.13f)
 			rightForce -= (rightLegPos.length - 0.1f) * 1;
 
 		//Calculate ground support force for each leg
@@ -290,7 +294,7 @@ void Ctrl_Task(void *arg)
 		groundDetector.rightSupportForce = rightForce + legMass * 9.8f - legMass * (rightLegPos.ddLength - imu_heading.ddz - 9.8f);
 		//Update the ground contact detector data
 		static uint32_t lastTouchTime = 0;
-		bool isTouchingGround = groundDetector.leftSupportForce > -20 && groundDetector.rightSupportForce > -20; //Determine if currently in ground contact
+		bool isTouchingGround = groundDetector.leftSupportForce > -100 && groundDetector.rightSupportForce > -100; //Determine if currently in ground contact
 		if(!isTouchingGround && (get_microseconds()/1000) - lastTouchTime < 1000) //If the last ground contact was less than 1 second ago, assume ground contact to prevent misjudgment due to bouncing
 			isTouchingGround = true;
 		if(!groundDetector.isTouchingGround && isTouchingGround) //Detect transition to ground contact state, mark cushioning state
@@ -316,13 +320,13 @@ void Ctrl_Task(void *arg)
 
 		//Use VMC (Virtual Model Control) to calculate the output torques for each joint motor
 		double leftJointTorque[2]={0};
-		leg_conv(leftForce, leftTp, leftJoint[1].angle, leftJoint[0].angle, leftJointTorque);
+		leg_conv(-leftForce, leftTp, leftJoint[1].angle, leftJoint[0].angle, leftJointTorque);
 		double rightJointTorque[2]={0};
-		leg_conv(rightForce, rightTp, rightJoint[1].angle, rightJoint[0].angle, rightJointTorque);
+		leg_conv(-rightForce, rightTp, rightJoint[1].angle, rightJoint[0].angle, rightJointTorque); //put negative sign for right force
 
 		leftF_check = leftForce;
 		leftTp_check = leftTp;
-		rightF_check = rightForce;
+		rightF_check = -rightForce;
 		rightTp_check = rightTp;
 		//Protect the legs from exceeding safe angles
 		if (g_remote_cmd.right_switch == 3){
@@ -378,8 +382,8 @@ void Ctrl_Task(void *arg)
 //		Motor_SetTorque(&rightJoint[1], -rightJointTorque[1]);
 		g_can_motors[FR_MOTOR_ID-1].torque = leftJointTorque[0];
 		g_can_motors[FL_MOTOR_ID-1].torque = leftJointTorque[1];
-		g_can_motors[BL_MOTOR_ID-1].torque = rightJointTorque[0];
-		g_can_motors[BR_MOTOR_ID-1].torque = rightJointTorque[1];
+		g_can_motors[BR_MOTOR_ID-1].torque = rightJointTorque[0];
+		g_can_motors[BL_MOTOR_ID-1].torque = rightJointTorque[1];
 		l1 = leftJointTorque[0];
 		l4 = leftJointTorque[1];
 		r1 = rightJointTorque[0];
@@ -392,10 +396,18 @@ void Ctrl_Init()
 {
 	//Initialize various PID parameters
 //	PID_SetErrLpfRatio(&rollPID.inner, 0.1f);
-	PID_Init(&legLengthPID, 500, 0.0, 0.0, -300.0, 300.0);
-//	PID_SetErrLpfRatio(&legLengthPID.inner, 0.5f);
-	PID_Init(&legAnglePID, 13, 0.0, 0.0, -3.0, 3.0);
+//	PID_Init(&legLengthPID, 500, 0.0, 0.0, -300.0, 300.0);
+//	PID_Init(&legAnglePID, 13, 0.0, 0.0, -3.0, 3.0);
+//	PID_Init(&rollPID, 55, 0.0, 0.0, -50.0, 50.0);
+//	PID_Init(&yawPID, 0.5f, 0.0, 0.0, -1, 1);
+
 //	PID_SetErrLpfRatio(&legAnglePID.outer, 0.5f);
-	PID_Init(&rollPID, 55, 0.0, 0.0, -50.0, 50.0);
-	PID_Init(&yawPID, 0.5f, 0.0, 0.0, -1, 1);
+//	PID_SetErrLpfRatio(&legLengthPID.inner, 0.5f);
+
+	PID_Init(&legLengthPID, 500, 0.0, 0.0, -300.0, 300.0);
+	PID_Init(&legAnglePID, 0, 0.0, 0.0, -1.0, 1.0);
+//	PID_Init(&rollPID, 55, 0.0, 0.0, -50.0, 50.0);
+//	PID_Init(&yawPID, 0.5f, 0.0, 0.0, -1, 1);
+	PID_Init(&rollPID, 0, 0.0, 0.0, -50.0, 50.0);
+	PID_Init(&yawPID, 0.0f, 0.0, 0.0, -1, 1);
 }

@@ -3,4 +3,4 @@
 ../Core/Tasks/Src/balancing_task.c:130:6:LegPos_UpdateTask	1
 ../Core/Tasks/Src/balancing_task.c:171:6:Ctrl_StandupPrepareTask	1
 ../Core/Tasks/Src/balancing_task.c:177:6:Ctrl_Task	42
-../Core/Tasks/Src/balancing_task.c:391:6:Ctrl_Init	1
+../Core/Tasks/Src/balancing_task.c:395:6:Ctrl_Init	1

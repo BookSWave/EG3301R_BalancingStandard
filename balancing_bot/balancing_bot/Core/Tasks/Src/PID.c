@@ -51,7 +51,7 @@ double PID_Compute(PID *pid, double setpoint, double measured_value, double dt, 
     pid->output =  output;
 
     // Comment this out if you are testing the leg locking only
-   return output;
+    return output;
 }
 
 void PID_CascadeCalc(CascadePID *pid,float angleRef,float angleFdb,float speedFdb, double dt)

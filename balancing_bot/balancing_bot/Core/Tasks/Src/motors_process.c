@@ -34,14 +34,14 @@ void motors_process_task(void *argument) {
 	vTaskDelay(5);
 	double leftWheel_offset = (double)g_can_motors[LEFT_MOTOR_ID-1].raw_data.angle[0];
 	double rightWheel_offset = (double)g_can_motors[RIGHT_MOTOR_ID-1].raw_data.angle[0];
-	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.kp = 500;
-	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.kp = 500;
+	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.kp = 5000;
+	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.kp = 5000;
 	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.ki = 0;
 	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.ki = 0;
 	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.kd = 0;
 	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.kd = 0;
-	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.max_out = 2000;
-	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.max_out = 2000;
+	g_can_motors[LEFT_MOTOR_ID-1].rpm_pid.max_out = 10000;
+	g_can_motors[RIGHT_MOTOR_ID-1].rpm_pid.max_out = 10000;
     TickType_t start_time;
     while (1) {
         endtime = get_microseconds();
@@ -52,16 +52,16 @@ void motors_process_task(void *argument) {
 //        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FL_MOTOR_ID-1], 3.62, -1);
 //        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BL_MOTOR_ID-1], -0.531, 1);
 //        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BR_MOTOR_ID-1], -3.62, 1);
-        //kind of working
-//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FR_MOTOR_ID-1], 0.95, -1);
-//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FL_MOTOR_ID-1], 0, 1);
-//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BL_MOTOR_ID-1], 4.19, -1);
-//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BR_MOTOR_ID-1], 0, 1);
-
+        //kind of working (Both same direction of front leg to left side
         motors_raw_angle_to_desired_angle_dir(&g_can_motors[FR_MOTOR_ID-1], PI/2, 1);
         motors_raw_angle_to_desired_angle_dir(&g_can_motors[FL_MOTOR_ID-1], 0.51, 1);
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BL_MOTOR_ID-1], -3.11+PI/2, 1);
-        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BR_MOTOR_ID-1], -5.75, 1);
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BL_MOTOR_ID-1], 4.74, -1);
+        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BR_MOTOR_ID-1], 1+PI/2, -1);
+
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FR_MOTOR_ID-1], 1.60, -1);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[FL_MOTOR_ID-1], 1.08+PI/2, -1);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BL_MOTOR_ID-1], 0, 1);
+//        motors_raw_angle_to_desired_angle_dir(&g_can_motors[BR_MOTOR_ID-1], 0, 1);
 
         motors_raw_angle_to_desired_angle_dir(&g_can_motors[LEFT_MOTOR_ID-1], 0, -1);
         motors_raw_angle_to_desired_angle_dir(&g_can_motors[RIGHT_MOTOR_ID-1], 0, 1);
