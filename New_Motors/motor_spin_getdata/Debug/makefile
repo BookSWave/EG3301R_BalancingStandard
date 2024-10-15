@@ -60,8 +60,8 @@ all: main-build
 main-build: motor_spin_getdata.elf secondary-outputs
 
 # Tool invocations
-motor_spin_getdata.elf motor_spin_getdata.map: $(OBJS) $(USER_OBJS) D:\EG2606\motor_spin_getdata\motor_spin_getdata\STM32F407IGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "motor_spin_getdata.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\EG2606\motor_spin_getdata\motor_spin_getdata\STM32F407IGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_spin_getdata.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+motor_spin_getdata.elf motor_spin_getdata.map: $(OBJS) $(USER_OBJS) D:\EG2606\Wangbo\EG3301R_BalancingStandard\New_Motors\motor_spin_getdata\STM32F407IGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "motor_spin_getdata.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\EG2606\Wangbo\EG3301R_BalancingStandard\New_Motors\motor_spin_getdata\STM32F407IGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_spin_getdata.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

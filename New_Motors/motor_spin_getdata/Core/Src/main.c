@@ -47,7 +47,9 @@ uint16_t motorid;
 uint16_t velocity;
 uint16_t current;
 uint16_t x;
+float CurVelocity;
 uint16_t motor_position;
+uint16_t id;
 #define P_MIN -95.5f    // Radians
 #define P_MAX 95.5f        
 #define V_MIN -45.0f    // Rad/s
@@ -84,6 +86,36 @@ static void MX_CAN1_Init(void);
 
 
 extern CAN_HandleTypeDef hcan1;
+
+static void _CanFilter(void)
+{
+    CAN_FilterTypeDef   sCAN_Filter;
+    
+    sCAN_Filter.FilterBank = 0;                         /* ָ��������ʼ���Ĺ����� */  
+    sCAN_Filter.FilterMode = CAN_FILTERMODE_IDMASK;     /* ����ģʽΪ����λģʽ */
+    sCAN_Filter.FilterScale = CAN_FILTERSCALE_16BIT;    /* ָ���˲����Ĺ�ģ */
+    sCAN_Filter.FilterIdHigh = 00;
+    sCAN_Filter.FilterIdLow = 00;             
+    sCAN_Filter.FilterMaskIdHigh = 00;
+    sCAN_Filter.FilterMaskIdLow = 00;
+    sCAN_Filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+    sCAN_Filter.FilterActivation = ENABLE;              /* ���û���ù����� */
+    sCAN_Filter.SlaveStartFilterBank = 0;               /* ѡ�������ӹ������� */
+    
+    HAL_CAN_ConfigFilter(&hcan1, &sCAN_Filter);
+}
+
+/**
+  * @brief  CAN�ӿڳ�ʼ��
+  * @param
+  * @retval 
+  */
+void CanComm_Init(void)
+{
+    _CanFilter();
+    HAL_CAN_Start(&hcan1);               /* ����CANͨ�� */  
+    HAL_CAN_ActivateNotification(&hcan1,CAN_IT_RX_FIFO0_MSG_PENDING);    /* ���������ж����� */
+}
 
 
 #define LIMIT_MIN_MAX(x,min,max) (x) = (((x)<=(min))?(min):(((x)>=(max))?(max):(x)))
@@ -143,26 +175,37 @@ static uint8_t              chassis_can_send_data[8];
   */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
+    uint16_t tmp_value;
+
     CAN_RxHeaderTypeDef RxHead; 
     uint8_t Rxdata[8];
+    HAL_CAN_DeactivateNotification(hcan,CAN_IT_RX_FIFO0_MSG_PENDING|CAN_IT_RX_FIFO0_FULL|CAN_IT_RX_FIFO0_OVERRUN);
     HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHead, Rxdata);
+    x=3;
 	
 		
-		if(RxHead.StdId == 0)
-		{
-			/*?????????????????ID?????????HT03???*/
-			if (Rxdata[0] == 0x02)
-			{
-				static uint8_t i = 0;
-				i = Rxdata[0] - 0x02;
-				get_joint_motor_measure(Rxdata);
-				x=2;
+	if(RxHead.StdId == 0x205)
+	{
+		/*?????????????????ID?????????HT03???*/
+		tmp_value  = Rxdata[0];
+		id = tmp_value;
+		tmp_value = (Rxdata[3]<<4)|(Rxdata[4]>>4);
+		CurVelocity = uint_to_float(tmp_value, V_MIN, V_MAX, 12);
+		get_joint_motor_measure(Rxdata);
+		x=5;
 
 
-			}
-	  }
+
+     }
+	HAL_CAN_ActivateNotification(hcan,CAN_IT_RX_FIFO0_MSG_PENDING|CAN_IT_RX_FIFO0_FULL|CAN_IT_RX_FIFO0_OVERRUN);
+
 }
 
+
+float CanComm_GetCurVelocity(void)
+{
+    return CurVelocity;
+}
 
 
 /**
@@ -183,10 +226,11 @@ static void CanTransmit(uint8_t *buf, uint8_t len,uint32_t motor_id)
 {
     CAN_TxHeaderTypeDef TxHead;             /**!< can??????Э??? */
     uint32_t canTxMailbox;
+    //x=4;
     
     if((buf != NULL) && (len != 0))
     {
-			TxHead.StdId    = motor_id;         /* ??????????????????0x01-0x04 */
+			TxHead.StdId    = 0x00;         /* ??????????????????0x01-0x04 */
 			TxHead.IDE      = CAN_ID_STD;       /* ??????????????????????? */
 			TxHead.RTR      = CAN_RTR_DATA;     /* ??????????????? */
 			TxHead.DLC      = len;              /* ???????????????? */
@@ -270,6 +314,7 @@ void CanComm_ControlCmd(uint8_t cmd,uint32_t motor_id)
 			case CMD_MOTOR_MODE:
 					buf[7] = 0xFC;
           x=2;
+        
 					break;
 			
 			case CMD_RESET_MODE:
@@ -290,8 +335,8 @@ static void ZeroPosition()
 {
 	CanComm_ControlCmd(CMD_MOTOR_MODE,0x02);
 	HAL_Delay(100);
-  CanComm_SendControlPara(0,0,0,0,0,0x02);
-  x= 1;
+  // CanComm_SendControlPara(0,0,0,0,0,0x02);
+    x= 1;
 	HAL_Delay(100);
 }
 
@@ -308,11 +353,12 @@ static void ZeroPosition()
 void MotorControl_Start()
 {
   ZeroPosition();
+  x=12;
 	
 	//У׼�����λ
 
 
-    CanComm_ControlCmd(CMD_ZERO_POSITION,0x02);
+    // CanComm_ControlCmd(CMD_ZERO_POSITION,0x02);
 	
 	HAL_Delay(100);
 }
@@ -369,7 +415,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_CAN1_Init();
-  MotorControl_Start();
+  CanComm_Init();
+//  MotorControl_Start();
+
   /* USER CODE BEGIN 2 */
 
   //uint32_t last_button_time = HAL_GetTick();
@@ -387,7 +435,9 @@ int main(void)
 //	  ctrl_GM_motor(pid_lol(SPEED,motor_rpm3), pid_lol_2(SPEED,motor_rpm4), pid_lol_3(SPEED,motor_rpm5), pid_lol_4(SPEED,motor_rpm6));
 	  //ctrl_motor(pid_lol(SPEED,motor_rpm1) , pid_lol(SPEED,motor_rpm2));
 	  //ctrl_motor(SPEED);
-    CanComm_SendControlPara(1,0,0,0,0,0x02);
+    
+//    CurVelocity = CanComm_GetCurVelocity();
+//    CanComm_SendControlPara(1,0,0,0,0,0x02);
 	  HAL_Delay(1);
 
 
