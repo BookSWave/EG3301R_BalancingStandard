@@ -36,14 +36,17 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define LIMIT_MIN_MAX(x,min,max) (x) = (((x)<=(min))?(min):(((x)>=(max))?(max):(x)))
+
 int16_t motor_rpm1;
 int16_t motor_rpm2;
 int16_t motor_rpm3;
-float motor_rpm4;
+float motor_position;
 int16_t motor_rpm5;
 int16_t motor_rpm6;
 int16_t x;
 uint16_t y;
+float motorid,current,velocity,position;
 
 #define P_MIN -95.5f    // Radians
 #define P_MAX 95.5f
@@ -94,155 +97,169 @@ static float uint_to_float(int x_int, float x_min, float x_max, int bits)
 }
 
 void setup_can(){
- CAN_FilterTypeDef can_filter_st = {0};
- can_filter_st.FilterActivation = ENABLE;
- can_filter_st.FilterMode = CAN_FILTERMODE_IDMASK;
- can_filter_st.FilterScale = CAN_FILTERSCALE_32BIT;
- can_filter_st.FilterIdHigh = 0;
- can_filter_st.FilterIdLow = 0;
- can_filter_st.FilterMaskIdHigh = 0;
- can_filter_st.FilterMaskIdLow = 0;
- can_filter_st.FilterBank=0;
- can_filter_st.FilterFIFOAssignment = CAN_RX_FIFO0;
- HAL_CAN_ConfigFilter(&hcan1, &can_filter_st);
- HAL_CAN_Start(&hcan1);
- HAL_CAN_ActivateNotification(&hcan1,CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_RX_FIFO0_FULL| CAN_IT_RX_FIFO0_OVERRUN);
+    CAN_FilterTypeDef can_filter_st = {0};
+    can_filter_st.FilterActivation = ENABLE;
+    can_filter_st.FilterMode = CAN_FILTERMODE_IDMASK;
+    can_filter_st.FilterScale = CAN_FILTERSCALE_32BIT;
+    can_filter_st.FilterIdHigh = 0;
+    can_filter_st.FilterIdLow = 0;
+    can_filter_st.FilterMaskIdHigh = 0;
+    can_filter_st.FilterMaskIdLow = 0;
+    can_filter_st.FilterBank=0;
+    can_filter_st.FilterFIFOAssignment = CAN_RX_FIFO0;
+    HAL_CAN_ConfigFilter(&hcan1, &can_filter_st);
+    HAL_CAN_Start(&hcan1);
+    HAL_CAN_ActivateNotification(&hcan1,CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_RX_FIFO0_FULL| CAN_IT_RX_FIFO0_OVERRUN);
 }
 
 
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
-CAN_RxHeaderTypeDef rx_header;
-uint8_t rx_buffer[8];
-HAL_CAN_DeactivateNotification(hcan,
-  CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_RX_FIFO0_FULL| CAN_IT_RX_FIFO0_OVERRUN);
-HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, rx_buffer);
+    CAN_RxHeaderTypeDef rx_header;
+    uint8_t rx_buffer[8];
+    // HAL_CAN_DeactivateNotification(hcan,
+    //   CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_RX_FIFO0_FULL| CAN_IT_RX_FIFO0_OVERRUN);
+    HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, rx_buffer);
 
-//M3508 motors
-//if (rx_header.StdId == 0x201)
-//{
-//	motor_rpm1 = (rx_buffer[2] << 8) + rx_buffer[3];
-//}
+    //M3508 motors
+    //if (rx_header.StdId == 0x201)
+    //{
+    //	motor_rpm1 = (rx_buffer[2] << 8) + rx_buffer[3];
+    //}
 
-//if (rx_header.StdId == 0x202)
-//{
-//	motor_rpm2 = (rx_buffer[2] << 8) + rx_buffer[3];
-//}
+    //if (rx_header.StdId == 0x202)
+    //{
+    //	motor_rpm2 = (rx_buffer[2] << 8) + rx_buffer[3];
+    //}
 
-// GM6020 Motors
-//if (rx_header.StdId == 0x205)
-//{
-//	motor_rpm3 = (rx_buffer[2] << 8) + rx_buffer[3];
-//}
-if (rx_buffer[0] == 0x02)
+    // GM6020 Motors
+    //if (rx_header.StdId == 0x205)
+    //{
+    //	motor_rpm3 = (rx_buffer[2] << 8) + rx_buffer[3];
+    //}
+    if (rx_buffer[0] == 0x01)
+    {
+
+      motorid  = rx_buffer[0];                                                          \
+      position = uint_to_float(((rx_buffer[1] << 8 ) | (rx_buffer[2])),P_MIN,P_MAX,16);      \
+      velocity = uint_to_float(((rx_buffer[3] << 4 ) | (rx_buffer[4]>>4)),V_MIN,V_MAX,12);   \
+      current  = uint_to_float(((rx_buffer[4] << 4 ) | (rx_buffer[5])),T_MIN,T_MAX,12);  
+    }
+    //if (rx_header.StdId == 0x207)
+    //{
+    //	motor_rpm5 = (rx_buffer[2] << 8) + rx_buffer[3];
+    //}
+    //if (rx_header.StdId == 0x208)
+    //{
+    //	motor_rpm6 = (rx_buffer[2] << 8) + rx_buffer[3];
+    //}
+
+    // HAL_CAN_ActivateNotification(hcan,
+    //   CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_RX_FIFO0_FULL| CAN_IT_RX_FIFO0_OVERRUN);
+}
+
+
+
+
+void motor_send_can(float f_p, float f_v, float f_kp, float f_kd, float f_t){
+    uint8_t p;
+    uint8_t v;
+    uint8_t kp;
+    uint8_t kd;
+    uint8_t t;
+    uint8_t buf[8];
+
+    LIMIT_MIN_MAX(f_p,  P_MIN,  P_MAX);
+    LIMIT_MIN_MAX(f_v,  V_MIN,  V_MAX);
+    LIMIT_MIN_MAX(f_kp, KP_MIN, KP_MAX);
+    LIMIT_MIN_MAX(f_kd, KD_MIN, KD_MAX);
+    LIMIT_MIN_MAX(f_t,  T_MIN,  T_MAX);
+
+    /* ����Э�飬��float��������ת�� */
+    p = float_to_uint(f_p,      P_MIN,  P_MAX,  16);
+    v = float_to_uint(f_v,      V_MIN,  V_MAX,  12);
+    kp = float_to_uint(f_kp,    KP_MIN, KP_MAX, 12);
+    kd = float_to_uint(f_kd,    KD_MIN, KD_MAX, 12);
+    t = float_to_uint(f_t,      T_MIN,  T_MAX,  12);
+
+    /* ���ݴ���Э�飬������ת��ΪCAN���������ֶ� */
+    buf[0] = p>>8;
+    buf[1] = p&0xFF;
+    buf[2] = v>>4;
+    buf[3] = ((v&0xF)<<4)|(kp>>8);
+    buf[4] = kp&0xFF;
+    buf[5] = kd>>4;
+    buf[6] = ((kd&0xF)<<4)|(t>>8);
+    buf[7] = t&0xff;
+    CAN_TxHeaderTypeDef CAN_tx_message;
+    uint32_t send_mail_box;
+    CAN_tx_message.IDE = CAN_ID_STD;
+    CAN_tx_message.RTR = CAN_RTR_DATA;
+    CAN_tx_message.DLC = 0x08;
+    CAN_tx_message.StdId = 0x01;
+    if (HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, buf, &send_mail_box) ==HAL_OK){
+
+    }
+}
+
+void motor_mode(void){
+    uint8_t tx_msg[8];
+    CAN_TxHeaderTypeDef CAN_tx_message;
+    uint32_t send_mail_box;
+    CAN_tx_message.IDE = CAN_ID_STD;
+    CAN_tx_message.RTR = CAN_RTR_DATA;
+    CAN_tx_message.DLC = 0x08;
+    CAN_tx_message.StdId = 0x01;
+    tx_msg[0] = 0xFF;
+    tx_msg[1] = 0xFF;
+    tx_msg[2] = 0xFF;
+    tx_msg[3] = 0xFF;
+    tx_msg[4] = 0xFF;
+    tx_msg[5] = 0xFF;
+    tx_msg[6] = 0xFF;
+    tx_msg[7] = 0xFC;
+    if (HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, tx_msg, &send_mail_box)==HAL_OK){
+
+    }
+}
+
+void zero_positon(void){
+    uint8_t tx_msg[8];
+    CAN_TxHeaderTypeDef CAN_tx_message;
+    uint32_t send_mail_box;
+    CAN_tx_message.IDE = CAN_ID_STD;
+    CAN_tx_message.RTR = CAN_RTR_DATA;
+    CAN_tx_message.DLC = 0x08;
+    CAN_tx_message.StdId = 0x01;
+    tx_msg[0] = 0xFF;
+    tx_msg[1] = 0xFF;
+    tx_msg[2] = 0xFF;
+    tx_msg[3] = 0xFF;
+    tx_msg[4] = 0xFF;
+    tx_msg[5] = 0xFF;
+    tx_msg[6] = 0xFF;
+    tx_msg[7] = 0xFE;
+    if (HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, tx_msg, &send_mail_box)==HAL_OK){
+
+    }
+}
+
+
+static void ZeroPosition(void)
 {
-	motor_rpm4 = uint_to_float(((rx_buffer[1] << 8 ) | (rx_buffer[2])),P_MIN,P_MAX,16);
-}
-//if (rx_header.StdId == 0x207)
-//{
-//	motor_rpm5 = (rx_buffer[2] << 8) + rx_buffer[3];
-//}
-//if (rx_header.StdId == 0x208)
-//{
-//	motor_rpm6 = (rx_buffer[2] << 8) + rx_buffer[3];
-//}
-
-HAL_CAN_ActivateNotification(hcan,
-  CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_RX_FIFO0_FULL| CAN_IT_RX_FIFO0_OVERRUN);
+    // motor_mode();
+    // HAL_Delay(100);
+    // motor_send_can(0,0,0,0,0);
+    // HAL_Delay(100);
 }
 
 
+void MotorControl_Start(void)
+{
+    ZeroPosition();
+    zero_positon();
 
-
-
-
-
-void ctrl_motor(int16_t torque1,int16_t torque2){
- uint8_t tx_msg[8];
- CAN_TxHeaderTypeDef CAN_tx_message;
- uint32_t send_mail_box;
- CAN_tx_message.IDE = CAN_ID_STD;
- CAN_tx_message.RTR = CAN_RTR_DATA;
- CAN_tx_message.DLC = 0x08;
- CAN_tx_message.StdId = 0x200;
- tx_msg[0] = torque1>>8;
- tx_msg[1] = torque1;
- tx_msg[2] = torque2>>8;
- tx_msg[3] = torque2;
- HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, tx_msg, &send_mail_box);
 }
-
-void ctrl_GM_motor(int16_t torque1,int16_t torque2,int16_t torque3,int16_t torque4){
- uint8_t tx_msg[8];
- CAN_TxHeaderTypeDef CAN_tx_message;
- uint32_t send_mail_box;
- CAN_tx_message.IDE = CAN_ID_STD;
- CAN_tx_message.RTR = CAN_RTR_DATA;
- CAN_tx_message.DLC = 0x08;
- CAN_tx_message.StdId = 0x1FF;
- tx_msg[0] = torque1>>8;
- tx_msg[1] = torque1;
- tx_msg[2] = torque2>>8;
- tx_msg[3] = torque2;
- tx_msg[4] = torque3>>8;
- tx_msg[5] = torque3;
- tx_msg[6] = torque4>>8;
- tx_msg[7] = torque4;
- HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, tx_msg, &send_mail_box);
-}
-
-
-uint8_t p;
-uint8_t v;
-uint8_t kp;
-uint8_t kd;
-uint8_t t;
-
-void ctrl_2_new_motor(float f_p, float f_v, float f_kp, float f_kd, float f_t){
- uint8_t buf[8];
- CAN_TxHeaderTypeDef CAN_tx_message;
- uint32_t send_mail_box;
- CAN_tx_message.IDE = CAN_ID_STD;
- CAN_tx_message.RTR = CAN_RTR_DATA;
- CAN_tx_message.DLC = 0x08;
- CAN_tx_message.StdId = 0x02;
- /* ����Э�飬��float��������ת�� */
- p = float_to_uint(f_p,      P_MIN,  P_MAX,  16);
- v = float_to_uint(f_v,      V_MIN,  V_MAX,  12);
- kp = float_to_uint(f_kp,    KP_MIN, KP_MAX, 12);
- kd = float_to_uint(f_kd,    KD_MIN, KD_MAX, 12);
- t = float_to_uint(f_t,      T_MIN,  T_MAX,  12);
-
- /* ���ݴ���Э�飬������ת��ΪCAN���������ֶ� */
- buf[0] = p>>8;
- buf[1] = p&0xFF;
- buf[2] = v>>4;
- buf[3] = ((v&0xF)<<4)|(kp>>8);
- buf[4] = kp&0xFF;
- buf[5] = kd>>4;
- buf[6] = ((kd&0xF)<<4)|(t>>8);
- buf[7] = t&0xff;
- HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, buf, &send_mail_box);
-}
-void ctrl_1_new_motor(void){
- uint8_t tx_msg[8];
- CAN_TxHeaderTypeDef CAN_tx_message;
- uint32_t send_mail_box;
- CAN_tx_message.IDE = CAN_ID_STD;
- CAN_tx_message.RTR = CAN_RTR_DATA;
- CAN_tx_message.DLC = 0x08;
- CAN_tx_message.StdId = 0x02;
- tx_msg[0] = 0xFF;
- tx_msg[1] = 0xFF;
- tx_msg[2] = 0xFF;
- tx_msg[3] = 0xFF;
- tx_msg[4] = 0xFF;
- tx_msg[5] = 0xFF;
- tx_msg[6] = 0xFF;
- tx_msg[7] = 0xFC;
- HAL_CAN_AddTxMessage(&hcan1, &CAN_tx_message, tx_msg, &send_mail_box);
-}
-
 
 /* USER CODE END 0 */
 
@@ -278,7 +295,7 @@ int main(void)
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
   setup_can();
-  ctrl_1_new_motor();
+  MotorControl_Start();
 
   //uint32_t last_button_time = HAL_GetTick();
   //int16_t spd = 1;
@@ -296,6 +313,7 @@ int main(void)
 	  //ctrl_motor(pid_lol(SPEED,motor_rpm1) , pid_lol(SPEED,motor_rpm2));
 	  //ctrl_motor(SPEED);
 //	  ctrl_2_new_motor(10,0,0,0,0);
+    //  motor_send_can(1,0,0,0,0);
 	  HAL_Delay(1);
 
 
