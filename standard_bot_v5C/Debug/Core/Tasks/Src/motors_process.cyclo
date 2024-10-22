@@ -1,5 +1,0 @@
-../Core/Tasks/Src/motors_process.c:30:6:motors_process_task	1
-../Core/Tasks/Src/motors_process.c:78:6:raw_angle_to_rad	2
-../Core/Tasks/Src/motors_process.c:87:6:motors_raw_angle_to_desired_angle_dir	2
-../Core/Tasks/Src/motors_process.c:99:6:motors_torque_to_current_6020	3
-../Core/Tasks/Src/motors_process.c:110:6:motors_torque_to_current_3508_gearbox	5

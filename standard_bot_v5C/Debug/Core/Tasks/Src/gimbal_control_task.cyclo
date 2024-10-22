@@ -1,7 +1,0 @@
-../Core/Tasks/Src/gimbal_control_task.c:62:6:joint_motor_init	1
-../Core/Tasks/Src/gimbal_control_task.c:69:6:gimbal_control_task	1
-../Core/Tasks/Src/gimbal_control_task.c:109:7:limit_angle	3
-../Core/Tasks/Src/gimbal_control_task.c:123:6:leg_control	1
-../Core/Tasks/Src/gimbal_control_task.c:191:7:compute_y	6
-../Core/Tasks/Src/gimbal_control_task.c:221:13:jointmotor_control_loop	1
-../Core/Tasks/Src/gimbal_control_task.c:264:6:gimbal_angle_control	5

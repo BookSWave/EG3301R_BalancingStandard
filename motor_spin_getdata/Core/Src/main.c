@@ -206,14 +206,13 @@ void ctrl_2_new_motor(float f_p, float f_v, float f_kp, float f_kd, float f_t){
  CAN_tx_message.RTR = CAN_RTR_DATA;
  CAN_tx_message.DLC = 0x08;
  CAN_tx_message.StdId = 0x02;
- /* ����Э�飬��float��������ת�� */
+
  p = float_to_uint(f_p,      P_MIN,  P_MAX,  16);
  v = float_to_uint(f_v,      V_MIN,  V_MAX,  12);
  kp = float_to_uint(f_kp,    KP_MIN, KP_MAX, 12);
  kd = float_to_uint(f_kd,    KD_MIN, KD_MAX, 12);
  t = float_to_uint(f_t,      T_MIN,  T_MAX,  12);
 
- /* ���ݴ���Э�飬������ת��ΪCAN���������ֶ� */
  buf[0] = p>>8;
  buf[1] = p&0xFF;
  buf[2] = v>>4;

@@ -1,2 +1,0 @@
-../Core/Tasks/Src/movement_control_task.c:31:6:chassis_feedback_update	16	static
-../Core/Tasks/Src/movement_control_task.c:39:6:movement_control_task	16	static
